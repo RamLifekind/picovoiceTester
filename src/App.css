@@ -1,0 +1,32 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #1a1a2e; color: #e0e0e0; }
+.app { max-width: 800px; margin: 0 auto; padding: 20px; }
+h1 { text-align: center; margin-bottom: 20px; color: #fff; }
+.tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+.tabs button { flex: 1; padding: 12px; border: 1px solid #333; background: #16213e; color: #aaa; cursor: pointer; border-radius: 8px; font-size: 16px; }
+.tabs button.active { background: #0f3460; color: #fff; border-color: #e94560; }
+.tab-content { background: #16213e; border-radius: 12px; padding: 24px; }
+.section { margin-bottom: 20px; }
+.section label { display: block; margin-bottom: 6px; font-weight: 600; color: #ccc; }
+.section input, .section select { width: 100%; padding: 10px; border: 1px solid #333; border-radius: 6px; background: #0f3460; color: #fff; font-size: 14px; }
+.btn { padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 600; }
+.btn-start { background: #e94560; color: #fff; width: 100%; }
+.btn-stop { background: #666; color: #fff; width: 100%; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.status { padding: 10px; border-radius: 6px; margin-top: 12px; font-size: 14px; }
+.status.connected { background: #1b4332; color: #95d5b2; }
+.status.error { background: #3d0000; color: #ff6b6b; }
+.status.info { background: #1a1a2e; color: #aaa; border: 1px solid #333; }
+.progress-bar { height: 20px; background: #333; border-radius: 10px; overflow: hidden; margin-top: 10px; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #e94560, #0f3460); transition: width 0.3s; }
+.log { margin-top: 16px; max-height: 300px; overflow-y: auto; background: #0a0a1a; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 13px; line-height: 1.6; }
+.log-entry { padding: 2px 0; border-bottom: 1px solid #1a1a2e; }
+.log-entry.success { color: #95d5b2; }
+.log-entry.error { color: #ff6b6b; }
+.log-entry.info { color: #aaa; }
+.verified-card { background: #1b4332; border: 1px solid #2d6a4f; border-radius: 10px; padding: 16px; margin-top: 12px; display: flex; align-items: center; gap: 16px; }
+.verified-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #95d5b2; }
+.verified-card .info { flex: 1; }
+.verified-card .name { font-size: 20px; font-weight: 700; color: #fff; }
+.verified-card .score { color: #95d5b2; font-size: 14px; }
+.verified-list { display: flex; flex-direction: column; gap: 10px; }

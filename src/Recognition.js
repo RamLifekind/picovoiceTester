@@ -222,8 +222,8 @@ function Recognition() {
           {liveScores.map((s, i) => (
             <div key={i} style={{ marginBottom: 8 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
-                <span style={{ color: '#aaa', fontSize: 13, fontFamily: 'monospace' }}>
-                  {s.speaker?.substring(0, 8)}...
+                <span style={{ color: '#aaa', fontSize: 13 }}>
+                  {s.name || `${s.speaker?.substring(0, 8)}...`}
                 </span>
                 <span style={{ color: getScoreColor(s.score), fontSize: 13, fontWeight: 600 }}>
                   {(s.score * 100).toFixed(1)}%

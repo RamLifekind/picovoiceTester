@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Eagle Voice Tester</h1>
+      <h1>Project FOCUS Voice Verification Tester</h1>
       <div className="tabs">
         <button className={tab === 'enrollment' ? 'active' : ''} onClick={() => setTab('enrollment')}>
           Enrollment

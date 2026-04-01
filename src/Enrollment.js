@@ -16,6 +16,8 @@ const PROVIDERS = [
   { displayName: 'UAT-Test001', id: '33adf184-5a9e-404a-8759-7928f7d43963', mail: 'UAT-Test001@lifekindconcepts.com' },
   { displayName: 'Yu Ping Garthwaite', id: '105f18a4-35a7-41f1-88ab-45505a670141', mail: 'Yu.Ping.Garthwaite@lifekindconcepts.com' },
   { displayName: 'Zoey Megard', id: 'bb8f2fff-a303-429d-abad-fee378c66adc', mail: 'Zoey.Megard@lifekindconcepts.com' },
+  { displayName: 'Sedipeh Parandeh', id: 'AA27CE8E-0BAA-4170-A2A1-B4DE5ADC927F', mail: 'Sedipeh.Parandeh@lifekindconcepts.com' },
+  { displayName: 'Mischa UAT Test', id: '01d630cf-732f-41d9-9b58-44a89e27bb8d', mail: 'mischa_uat_test@lifekindconcepts.com' },
 ];
 
 function Enrollment() {
@@ -34,9 +36,11 @@ function Enrollment() {
   const mediaStreamRef = useRef(null);
   const processorRef = useRef(null);
   const audioContextRef = useRef(null);
+  const logsEndRef = useRef(null);
 
   const addLog = useCallback((text, type = 'info') => {
     setLogs(prev => [...prev.slice(-100), { text: `[${new Date().toLocaleTimeString()}] ${text}`, type }]);
+    setTimeout(() => logsEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
   }, []);
 
   const stop = useCallback(() => {
@@ -315,10 +319,11 @@ function Enrollment() {
 
       {/* Logs */}
       {logs.length > 0 && (
-        <div className="log">
+        <div className="log" style={{ maxHeight: 300, overflowY: 'auto' }}>
           {logs.map((log, i) => (
             <div key={i} className={`log-entry ${log.type}`}>{log.text}</div>
           ))}
+          <div ref={logsEndRef} />
         </div>
       )}
     </div>

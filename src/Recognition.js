@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { VOICE_BACKEND_WS } from './config';
+import { startMic } from './mic-helper';
 
 function Recognition() {
   const [status, setStatus] = useState({ type: 'info', text: 'Click Start to begin recognition' });
@@ -110,25 +111,12 @@ function Recognition() {
         ws.send(JSON.stringify({ type: 'set_threshold', value: threshold }));
 
         try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            audio: { sampleRate: 16000, channelCount: 1, echoCancellation: true, noiseSuppression: true }
+          const mic = await startMic((buffer) => {
+            if (ws.readyState === WebSocket.OPEN) ws.send(buffer);
           });
-          mediaStreamRef.current = stream;
-
-          const audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
-          audioContextRef.current = audioContext;
-          const source = audioContext.createMediaStreamSource(stream);
-
-          await audioContext.audioWorklet.addModule('/pcm-processor.js');
-          const processor = new AudioWorkletNode(audioContext, 'pcm-processor');
-          processorRef.current = processor;
-
-          processor.port.onmessage = (e) => {
-            if (ws.readyState === WebSocket.OPEN) ws.send(e.data);
-          };
-
-          source.connect(processor);
-          processor.connect(audioContext.destination);
+          mediaStreamRef.current = mic.stream;
+          audioContextRef.current = mic.audioContext;
+          processorRef.current = mic.processor;
           addLog('Microphone streaming started', 'success');
         } catch (micErr) {
           addLog(`Microphone error: ${micErr.message}`, 'error');
@@ -276,7 +264,7 @@ function Recognition() {
               <div className="info">
                 <div className="name">{v.firstName}</div>
                 <div className="score">Confidence: {(v.score * 100).toFixed(1)}%</div>
-                <div style={{ color: '#666', fontSize: 12 }}>{v.userNum?.substring(0, 8)}...</div>
+                <div style={{ color: '#666', fontSize: 11, fontFamily: 'monospace', wordBreak: 'break-all' }}>{v.userNum}</div>
               </div>
             </div>
           ))}

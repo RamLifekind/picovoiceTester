@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { VOICE_BACKEND, VOICE_BACKEND_WS } from './config';
+import { startMic } from './mic-helper';
 
 const PROVIDERS = [
   { displayName: 'Andrew Park', id: '91393876-7762-4492-a07a-3620b5c7d09f', mail: 'Andrew.Park@lifekindconcepts.com' },
@@ -74,25 +75,12 @@ function Enrollment() {
         addLog(`Sent enrollment start for ${provider.displayName} (${provider.id})`);
 
         try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            audio: { sampleRate: 16000, channelCount: 1, echoCancellation: true, noiseSuppression: true }
+          const mic = await startMic((buffer) => {
+            if (ws.readyState === WebSocket.OPEN) ws.send(buffer);
           });
-          mediaStreamRef.current = stream;
-
-          const audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
-          audioContextRef.current = audioContext;
-          const source = audioContext.createMediaStreamSource(stream);
-
-          await audioContext.audioWorklet.addModule('/pcm-processor.js');
-          const processor = new AudioWorkletNode(audioContext, 'pcm-processor');
-          processorRef.current = processor;
-
-          processor.port.onmessage = (e) => {
-            if (ws.readyState === WebSocket.OPEN) ws.send(e.data);
-          };
-
-          source.connect(processor);
-          processor.connect(audioContext.destination);
+          mediaStreamRef.current = mic.stream;
+          audioContextRef.current = mic.audioContext;
+          processorRef.current = mic.processor;
           addLog('Microphone streaming started', 'success');
         } catch (micErr) {
           addLog(`Microphone error: ${micErr.message}`, 'error');

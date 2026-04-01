@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { VOICE_BACKEND, VOICE_BACKEND_WS } from './config';
 
 const PROVIDERS = [
@@ -50,6 +50,9 @@ function Enrollment() {
     if (wsRef.current) { wsRef.current.close(); wsRef.current = null; }
     setIsRunning(false);
   }, []);
+
+  // Cleanup on unmount (tab switch)
+  useEffect(() => stop, [stop]);
 
   const startEnrollment = useCallback(async (provider) => {
     setSelectedProvider(provider);

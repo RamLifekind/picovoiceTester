@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { VOICE_BACKEND_WS } from './config';
 
 function Recognition() {
@@ -85,6 +85,9 @@ function Recognition() {
     setIsRunning(false);
     setStatus({ type: 'info', text: 'Stopped' });
   }, []);
+
+  // Cleanup on unmount (tab switch)
+  useEffect(() => stop, [stop]);
 
   const start = useCallback(async () => {
     setIsRunning(true);
